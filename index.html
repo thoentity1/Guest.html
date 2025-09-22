@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sania & Zyn — Invitation & RSVP</title>
+<title>Sania & Zyn — Invitation</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
@@ -42,7 +42,7 @@
   /* Left: Invitation image */
   .invite-container {
     flex: 1;
-    overflow-y: auto; /* scroll if image is tall */
+    overflow-y: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -51,17 +51,18 @@
   }
 
   .invite-container img {
-    width: 100%;
-    height: auto;
+    max-height: 60vh;   /* 60% of screen height */
     max-width: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
     display: block;
     border: 3px solid #d99b83;
     border-radius: 10px;
   }
 
-  /* Right: RSVP panel */
-  .rsvp {
+  /* Right: Send invite panel */
+  .invite-panel {
     width: 420px;
     background: #fafafa;
     padding: 36px;
@@ -71,7 +72,7 @@
     overflow-y: auto;
   }
 
-  .rsvp h2 {
+  .invite-panel h2 {
     font-family: "Playfair Display", serif;
     font-size: 22px;
     margin-bottom: 12px;
@@ -85,7 +86,7 @@
     color: var(--muted);
   }
 
-  input, select {
+  input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -113,19 +114,12 @@
     .wrap {
       flex-direction: column;
     }
-    .rsvp {
+    .invite-panel {
       width: 100%;
     }
     .invite-container img {
-      width: 100%;
-      height: auto;
+      max-height: 40vh;
     }
-  }
-
-  .section {
-    margin-bottom: 28px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
   }
 </style>
 </head>
@@ -137,47 +131,26 @@
     <img src="My Invitation.jpg" alt="Wedding Invitation">
   </div>
 
-  <!-- Right: Invite & RSVP panel -->
-  <aside class="rsvp">
-    <!-- Step 1: Send Invitation -->
-    <div class="section">
-      <h2>Send Invite</h2>
-      <form id="inviteForm">
-        <label for="guestname">Guest Name *</label>
-        <input type="text" id="guestname" required>
+  <!-- Right: send invite -->
+  <aside class="invite-panel">
+    <h2>Send Invite</h2>
+    <form id="inviteForm">
+      <label for="guestname">Guest Name *</label>
+      <input type="text" id="guestname" required>
 
-        <label for="admit">Number of Admits *</label>
-        <input type="number" id="admit" min="1" max="10" required>
+      <label for="admit">Number of Admits *</label>
+      <input type="number" id="admit" min="1" max="10" required>
 
-        <label for="guestphone">Guest WhatsApp Number (with country code) *</label>
-        <input type="tel" id="guestphone" placeholder="e.g. 27821234567" required>
+      <label for="guestphone">Guest WhatsApp Number (with country code) *</label>
+      <input type="tel" id="guestphone" placeholder="e.g. 27821234567" required>
 
-        <button type="submit" class="btn">Send Invitation</button>
-      </form>
-    </div>
-
-    <!-- Step 2: RSVP Back -->
-    <div class="section">
-      <h2>RSVP</h2>
-      <form id="rsvpForm">
-        <label for="fullname">Full Name *</label>
-        <input type="text" id="fullname" required>
-
-        <label for="attending">Attending *</label>
-        <select id="attending" required>
-          <option value="">Please choose</option>
-          <option value="Yes">Yes — I will attend</option>
-          <option value="No">No — cannot attend</option>
-        </select>
-
-        <button type="submit" class="btn">Send RSVP</button>
-      </form>
-    </div>
+      <button type="submit" class="btn">Send Invitation</button>
+    </form>
   </aside>
 </div>
 
 <script>
-// Step 1: Send Invite to Guest
+// Send Invite to Guest
 const inviteForm = document.getElementById('inviteForm');
 inviteForm.addEventListener('submit', e => {
   e.preventDefault();
@@ -190,34 +163,11 @@ inviteForm.addEventListener('submit', e => {
     return;
   }
 
-  // Add RSVP link (this page URL)
-  const rsvpLink = window.location.href;
-
-  const msg = `Dear ${guestname},\n\nYou are invited to the wedding of Sania & Zyn 🎉\nAdmits: ${admit}\n\nPlease RSVP here: ${rsvpLink}`;
+  const msg = `Dear ${guestname},\n\nYou are invited to the wedding of Sania & Zyn 🎉\nAdmits: ${admit}\n\nWe look forward to celebrating with you!`;
   const url = `https://wa.me/${guestphone}?text=${encodeURIComponent(msg)}`;
 
   window.open(url, "_blank");
   inviteForm.reset();
-});
-
-// Step 2: Guest RSVP back to you
-const rsvpForm = document.getElementById('rsvpForm');
-rsvpForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const fullname = document.getElementById('fullname').value.trim();
-  const attending = document.getElementById('attending').value;
-
-  if (!fullname || !attending) {
-    alert("Please complete all required fields.");
-    return;
-  }
-
-  const msg = `RSVP for Sania & Zyn:\nName: ${fullname}\nAttending: ${attending}`;
-  const phone = "27843017770"; // Your WhatsApp number
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-
-  window.open(url, "_blank");
-  rsvpForm.reset();
 });
 </script>
 
