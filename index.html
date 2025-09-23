@@ -42,6 +42,7 @@
   /* Left: Invitation image */
   .invite-container {
     flex: 1;
+    overflow-y: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -50,8 +51,8 @@
   }
 
   .invite-container img {
-    width: 60%;
-    height: 60%;
+    width: 65%;
+    height: 65%;
     max-width: 100%;
     object-fit: contain;
     display: block;
@@ -180,22 +181,30 @@
 const inviteForm = document.getElementById('inviteForm');
 inviteForm.addEventListener('submit', e => {
   e.preventDefault();
-  const guestname = document.getElementById('guestname').value.trim();
-  const admit = document.getElementById('admit').value.trim();
-  const guestphone = document.getElementById('guestphone').value.trim();
+  let guestname = document.getElementById('guestname').value.trim();
+  let admit = document.getElementById('admit').value.trim();
+  let guestphone = document.getElementById('guestphone').value.trim();
 
   if (!guestname || !admit || !guestphone) {
     alert("Please complete all required fields.");
     return;
   }
 
-  // RSVP link (fixed)
+  // Clean phone number: remove +, spaces, dashes
+  guestphone = guestphone.replace(/\D/g, "");
+
+  if (!guestphone.startsWith("27")) {
+    alert("Please enter number with country code, e.g. 27821234567");
+    return;
+  }
+
+  // Fixed RSVP link
   const rsvpLink = "https://thoentity1.github.io/nikahSNZ/";
 
   // Styled WhatsApp message
   const msg = `💍 *Wedding Invitation* 💍\n\nDear ${guestname},\n\nYou are invited to the wedding of\n✨ _Sania & Zyn_ ✨\n\n🎟 Admits: ${admit}\n\n📅 Date: Saturday, 12 October 2025\n🕒 Time: 3:00 PM\n📍 Venue: Crystal Hall, Cape Town\n\n👉 Please RSVP here: ${rsvpLink}\n\nWe look forward to celebrating this special day with you 💖`;
 
-  const url = `https://wa.me/${guestphone}?text=${encodeURIComponent(msg)}`;
+  const url = "https://wa.me/" + guestphone + "?text=" + encodeURIComponent(msg);
   window.open(url, "_blank");
   inviteForm.reset();
 });
@@ -204,8 +213,8 @@ inviteForm.addEventListener('submit', e => {
 const rsvpForm = document.getElementById('rsvpForm');
 rsvpForm.addEventListener('submit', e => {
   e.preventDefault();
-  const fullname = document.getElementById('fullname').value.trim();
-  const attending = document.getElementById('attending').value;
+  let fullname = document.getElementById('fullname').value.trim();
+  let attending = document.getElementById('attending').value;
 
   if (!fullname || !attending) {
     alert("Please complete all required fields.");
@@ -214,7 +223,7 @@ rsvpForm.addEventListener('submit', e => {
 
   const msg = `📩 *RSVP for Sania & Zyn*\n\nName: ${fullname}\nAttending: ${attending}`;
   const phone = "27843017770"; // Your WhatsApp number
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
 
   window.open(url, "_blank");
   rsvpForm.reset();
