@@ -201,4 +201,25 @@ inviteForm.addEventListener('submit', e => {
 });
 
 // Step 2: Guest RSVP back to you
-const rsvpForm = do
+const rsvpForm = document.getElementById('rsvpForm');
+rsvpForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const fullname = document.getElementById('fullname').value.trim();
+  const attending = document.getElementById('attending').value;
+
+  if (!fullname || !attending) {
+    alert("Please complete all required fields.");
+    return;
+  }
+
+  const msg = `📩 *RSVP for Sania & Zyn*\n\nName: ${fullname}\nAttending: ${attending}`;
+  const phone = "27843017770"; // Your WhatsApp number
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+  window.open(url, "_blank");
+  rsvpForm.reset();
+});
+</script>
+
+</body>
+</html>
